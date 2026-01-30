@@ -1,20 +1,17 @@
 #include <Arduino.h>
 
-// Pins da matriz de velostat
-const int Line[2] = {16, 17};
-const int Col[2] = {27, 26}; //ADCs
-const int button_pin = 15;
-const int LED_PIN = 25; //Built-in
+#include <WiFi.h>
+#include <WebServer.h>
+#include <time.h>
 
-// Eventos
-#define N_events 4096
-long events[N_events][3];
-int i_evt = 1; //Porque testamos o evento anterior
+#include "WifiControl.h"
+#include "Communication.h"
+#include "sensors.h"
+#include "Events.h"
+
 
 // Div
 bool print = false;
-bool wifi_on = true;
-bool button_state = HIGH;
 
 void setup() {
 
@@ -23,13 +20,8 @@ void setup() {
   disconnect_wifi();
   analogReadResolution(12);
 
-  pinMode(button_pin, INPUT_PULLUP);
-
-  //Inicializa matriz de velostat
-  for(int n = 0; n < 2; n++){
-    pinMode(Line[n], OUTPUT);
-    digitalWrite(Line[n], LOW);
-  }
+  setup_sensors();
+  read_eeprom();
 }
 
 void loop()
@@ -60,22 +52,8 @@ void loop()
   handleConsole();
 }
 
-void print_events()
-{
-  Serial.printf("[\n");
-  for(int n = 0; n < i_evt; n++)  Serial.printf("%d %d %d; ", events[n][0], events[n][1],events[n][2]);
-  Serial.printf("\n];\n");
-}
 
-void wifi_button(){
-  if(button_state == HIGH && digitalRead(button_pin) == LOW){
-      button_state = LOW;
-      wifi_on ? disconnect_wifi() : connect_wifi(); // Toggle wifi
-    }
-    else if(button_state == LOW && digitalRead(button_pin) == HIGH){
-      button_state = HIGH;
-    }
-}
+
 
 void handleMessage(char msg[])
 {
@@ -83,7 +61,7 @@ void handleMessage(char msg[])
   float value;
   sscanf(msg, "%c %f", &c, &value);
 
-  if(c == 'w') wifi_on ? disconnect_wifi() : connect_wifi(); // Toggle wifi
+  if(c == 'w') is_wifi_on() ? disconnect_wifi() : connect_wifi(); // Toggle wifi
   if(c == 't'){ char str[24]; formatTime(millis()/1000, str); Serial.println(str); } //Imprime tempo atual
   if(c == 'c')  calibration(msg[1]); // Calibration
   if(c == 'p')  print = !print; // Toggle o print dos sinais

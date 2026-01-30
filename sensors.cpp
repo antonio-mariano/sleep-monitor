@@ -1,7 +1,18 @@
+#include <Arduino.h>
+#include <EEPROM.h>
 
+#include "Communication.h"
+#include "sensors.h"
+#include "Events.h"
 
+const uint32_t MAGIC = 0xCAFEBABE;
 
 // Calibração
+// Pins da matriz de velostat
+const int Line[2] = {16, 17};
+const int Col[2] = {27, 26}; //ADCs
+
+
 bool calibrating = false;
 float Gmax[4];
 float Gmin[4];
@@ -18,6 +29,44 @@ float b[4] = {0, 0, 0, 0};
 
 /***** Funções ******/
 
+
+
+void save_eeprom() {
+  EEPROM.begin(32);
+  EEPROM.put(0, MAGIC);   // Guarda o magic number
+  EEPROM.put(4, m);       // Guarda o array
+  EEPROM.commit();
+}
+
+
+bool read_eeprom() {
+  EEPROM.begin(32);
+
+  uint32_t magicLido;
+  EEPROM.get(0, magicLido);
+
+  if (magicLido != MAGIC) {
+    Serial.println("Sem calibração válida. Usar valores default.");
+    return false;
+  }
+  Serial.println("Calibração válida encontrada:");
+
+  EEPROM.get(4, m);
+  for (int i = 0; i < 4; i++)  Serial.printf("m[%d] = %.1f\n", i, m[i]);
+
+  return true;
+}
+
+
+void setup_sensors()
+{
+  //Inicializa matriz de velostat
+  for(int n = 0; n < 2; n++){
+    pinMode(Line[n], OUTPUT);
+    digitalWrite(Line[n], LOW);
+  }
+}
+
 void calibration(char a)
 {
     //Start
@@ -32,12 +81,14 @@ void calibration(char a)
     if(a == 'e')  // Calcula o m,b que mapeia (Gmin, Gmax) para (-10, 10), embora depois o b seja continuamente ajustado para manter G ~= 0
     {
       calibrating = false;
-      if(!wifi_on) digitalWrite(LED_BUILTIN, LOW); 
+      if(!is_wifi_on()) digitalWrite(LED_BUILTIN, LOW); 
       for(int n = 0; n < 4; n++)
       {
         m[n] = 2000.0 / (Gmax[n] - Gmin[n]);
         b[n] = 1000.0 - m[n] * Gmax[n]; //Apenas para manter a funçao continua, pois b é ajustado dinamicamente
         Serial.printf("// m[%d] = %.3f\n", n, m[n]);
+
+        save_eeprom();
       }
     }
 }
