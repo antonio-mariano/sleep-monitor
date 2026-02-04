@@ -1,1 +1,10 @@
-credentials.cpp
+listar_projeto.bat
+__ignore/
+
+firmware/sleep-monitor/credentials.cpp
+dataset/*.mat
+!dataset/synthetic_sleep.mat
+
+*.asv
+*.tmp
+*.log
