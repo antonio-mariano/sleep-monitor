@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Communication.h"
+
+#define R0 1.5
+
 // Calibração
 
 /***** Funções ******/

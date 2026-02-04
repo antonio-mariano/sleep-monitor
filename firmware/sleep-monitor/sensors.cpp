@@ -19,7 +19,7 @@ float Gmin[4];
 
 
 // Condutância G 
-const float Gc = 1/1.5;
+const float Gc = 1/R0;
 float G[4] = {0, 0, 0, 0};
 float W[4];
 
