@@ -17,34 +17,39 @@ The workflow below summarizes the full pipeline:
 
 ## 🧩 Components
 ### Raspberry Pi Pico W + Firmware (Arduino IDE C++)
+- Sensor calibration (stored in persistent memory)  
 - Reads the pressure‑sensor matrix  
-- Detects movement events  
-- Allows sensor calibration (stored in persistent memory)  
+- Detects and stores movement events  
 - Serves a lightweight Wi‑Fi webserver for data transfer  
 - Streams data to a Python client in CSV format 
 
-### Pressure Sensors
-- Based on **velostat**, a pressure‑dependent resistive sheet material  
-- Each sensor is a 3 cm × 3 cm velostat square between two 2.5 cm × 2.5 cm aluminum‑foil electrodes  
+### DIY Pressure Sensors
+- Based on *velostat*, a pressure‑dependent resistive sheet material  
+- Each sensor is a 3cm × 3cm square cut from velostat sheet, between two 2.5cm × 2.5cm aluminum‑foil electrodes  
 - Resistance varies with applied pressure  
-- Four sensors placed across the mattress at torso height  
+- Four sensors are placed across (under) the mattress at torso height  
 - Although physically in a line, they are electrically connected in a matrix to reduce wiring  
 
-## How to Build the Circuit
-- All connections are shown in the following diagram
-- ![Workflow](images/schematic.png)
-- Each sensor is a modeled as a (pressure dependent) resistor
-- Two 1.5 kΩ resistors are needed to provide a correct reference. Any value in the range 500-5k Ω can be used if you edit "#define R0 1.5" in sensor.h
-- A switch allows to turn ON/OFF the Wifi. You can avoid it and have always ON if you remove "disconnect_wifi()" in the setup() in sleep-monitor.ino.
-
+## Building the Circuit
+![Workflow](images/schematic.png)
+- All connections are shown in the diagram
+- Each sensor is modeled as a resistor (pressure dependent). As described earlier, each sensor is a 3cm × 3cm velostat square between two 2.5cm × 2.5cm aluminum‑foil electrodes  
+- Two external 1.5 kΩ resistors connected between GP26/27 and GND are needed to provide a correct reference. Any value in the range 0.5kΩ to 5kΩ can be used if you edit "#define R0 1.5" in Sensor.h
+- Working principle: SENSOR_LINE_1/2 is forced at Vcc/GND alternating, while measuring SENSOR_COL_A/B voltages. The system of 4 equations and 4 unknowns (resistences) is solved iteratively in Sensors.cpp/h.
+- **Optional:** A switch allows to turn ON/OFF the Wifi. You can also use the serial-monitor command **w** to toggle WiFi state, indicated by the builtin LED.
 ---
 
 ## How to Run
+- To setup your WiFi, edit you credentials **char ssid[]** and **char password[]** in WiFiControl.cpp. Alternatively, create a different .cpp file and place there (no need for .h).
+- When you connect the Pico W power, Wifi will try to connect. Using a serial monitor, you can view its status.
+- If WiFI sucessfully connects, the IP running the Web Server will be printed; For example: IP: 192.168.1.21
 
-### • Wi‑Fi Setup
-- Connects to the Wi‑Fi network defined in `secrets.h`  
-- Initializes a lightweight HTTP server
-
+### User commands - Serial Monitor
+- **W** - Toggle WiFi state ON/OFF. The builtin LED switches according to WiFi State
+- **P** - Prints the sensor readins in real-time. Useful to view in graph format with the Arduino IDE Serial Plotter.
+- **CS** - Start the calibration process (see below)
+- **CS** - Ends the calibration process (see below)
+- **E** - Prints recorded Events in raw MATLAB format: [time (seconds) , sensor id (0 to 3) , pressure]
 
 ---
 
