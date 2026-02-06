@@ -6,24 +6,25 @@
 #include <time.h>
 
 #include "Communication.h"
-#include "sensors.h"
-//#include "credentials.h"
+#include "Sensors.h"
+
+/// Put here your credentials
+//const char* ssid = "Your SSID";
+//const char* password = "Your Password";
 
 const int button_pin = 15;
-
 bool wifi_on = true;
-
-
 
 //Liga wifi
 void connect_wifi()
 {
   Serial.print("\n");
-  Serial.print("Ligando WiFi...\n");
+  Serial.printf("Ligando WiFi no SSID %s\n", ssid);
+  delay(100);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    Serial.print(".\n");
   }
   Serial.print("WiFi ligado no IP: "); Serial.println(WiFi.localIP());
   digitalWrite(LED_BUILTIN, HIGH);  // LED aceso = Wi-Fi ligado

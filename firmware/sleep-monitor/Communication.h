@@ -1,6 +1,6 @@
 #pragma once
 
-#include <WebServer.h> // ← isto é obrigatório aqui extern WebServer server;
+#include <WebServer.h> 
 extern WebServer server;
 
 
@@ -22,4 +22,5 @@ void handleCommand();
 
 void handleEvents();
 
+//Cria uma string str[] no formato aaaa-mm-dd; t_seg = segundos desde que o pico foi iniciado. 
 void formatTime(long seg, char str[]);

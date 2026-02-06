@@ -20,7 +20,7 @@ for x in range(1, 65):  # limit to 1–64
     url = f"http://{base_ip}{x}{path}"
 
     try:
-        response = requests.get(url, timeout=0.1)
+        response = requests.get(url, timeout=0.2)
         response.raise_for_status()
         data_text = response.text
         device_url = url

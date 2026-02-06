@@ -2,7 +2,7 @@
 #include <EEPROM.h>
 
 #include "Communication.h"
-#include "sensors.h"
+#include "Sensors.h"
 #include "Events.h"
 
 const uint32_t MAGIC = 0xCAFEBABE;
@@ -70,7 +70,7 @@ void setup_sensors()
 void calibration(char a)
 {
     //Start
-    if(a == 's')  // Prepara Gmax e Gmin, e usa a flag para informar que a gravação deve ser feita
+    if(a == 's' || a == 'S')  // Prepara Gmax e Gmin, e usa a flag para informar que a gravação deve ser feita
     {
       calibrating = true;
       digitalWrite(LED_BUILTIN, HIGH); 
@@ -78,7 +78,7 @@ void calibration(char a)
     }
 
    //End
-    if(a == 'e')  // Calcula o m,b que mapeia (Gmin, Gmax) para (-10, 10), embora depois o b seja continuamente ajustado para manter G ~= 0
+    if(a == 'e' || a == 'E')  // Calcula o m,b que mapeia (Gmin, Gmax) para (-10, 10), embora depois o b seja continuamente ajustado para manter G ~= 0
     {
       calibrating = false;
       if(!is_wifi_on()) digitalWrite(LED_BUILTIN, LOW); 
@@ -173,7 +173,7 @@ void detect_event(long time, int n, float p)
     events[i_evt][1] = n_in_event;
     events[i_evt][2] = p_prev;
     
-    Serial.printf("\n//t = %d ; P%d = %d\n", events[i_evt][0], events[i_evt][1], events[i_evt][2]);
+    Serial.printf("Detected event: at t=%d: P%d = %d\n", events[i_evt][0], events[i_evt][1], events[i_evt][2]);
     if(i_evt < N_events-1) i_evt++;
 
     timer_block[n] = time;

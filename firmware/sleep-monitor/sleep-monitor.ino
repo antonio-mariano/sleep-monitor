@@ -1,17 +1,16 @@
-      #include <Arduino.h>
-
+#include <Arduino.h>
 #include <WiFi.h>
 #include <WebServer.h>
 #include <time.h>
 
 #include "WifiControl.h"
 #include "Communication.h"
-#include "sensors.h"
+#include "Sensors.h"
 #include "Events.h"
 
 
 // Div
-bool print = false;
+bool print_sensors = false;
 
 void setup() {
 
@@ -38,36 +37,20 @@ void loop()
     for(int n = 0; n < 4; n++) 
     {
       float p = pressure(n);
-      if(print)  Serial.printf("P%d:%.2f ", n, p);
+      if(print_sensors)  Serial.printf("P%d:%.2f ", n, p);
       detect_event(time, n, p);
     }
-    if(print)  Serial.printf("Min:-1000 Max:1000\n");
+    if(print_sensors)  Serial.printf("Min:-1000 Max:1000\n");
 
     // Botão do wifi
     wifi_button();
-
   }
 
   handleClient();
   handleConsole();
 }
 
-
-
-
-void handleMessage(char msg[])
-{
-  char c;
-  float value;
-  sscanf(msg, "%c %f", &c, &value);
-
-  if(c == 'w') is_wifi_on() ? disconnect_wifi() : connect_wifi(); // Toggle wifi
-  if(c == 't'){ char str[24]; formatTime(millis()/1000, str); Serial.println(str); } //Imprime tempo atual
-  if(c == 'c')  calibration(msg[1]); // Calibration
-  if(c == 'p')  print = !print; // Toggle o print dos sinais
-  if(c == 'e')  print_events(); // Imprime os eventos guardados
-}
-
+//Handle serial monitor input
 void handleConsole()
 {
   static char str[16] = "";
@@ -87,4 +70,20 @@ void handleConsole()
     }
   }
 }
+
+
+// Handle input commands
+void handleMessage(char msg[])
+{
+  char c;
+  float value;
+  sscanf(msg, "%c %f", &c, &value);
+
+  if(c == 'w' || c == 'W')  is_wifi_on() ? disconnect_wifi() : connect_wifi(); // Toggle wifi
+  if(c == 't' || c == 'T')  { char str[24]; formatTime(millis()/1000, str); Serial.println(str); } //Imprime tempo atual
+  if(c == 'c' || c == 'C')  calibration(msg[1]); // Calibration (Start ou End)
+  if(c == 'p' || c == 'P')  print_sensors = !print_sensors; // Toggle o print dos sinais
+  if(c == 'e' || c == 'E')  print_events(); // Imprime os eventos guardados
+}
+
 

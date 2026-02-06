@@ -3,37 +3,22 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <time.h>
-
 #include "Communication.h"
-#include "sensors.h"
+#include "Sensors.h"
 #include "Events.h"
 
 
 WebServer server(80);
-
-
 time_t initial_time;
 
 
-
-
-//seg = segundos desde que o pico foi iniciado. Coloca em str o tempo formatado
-void formatTime(long seg, char str[])
-{
-  // Converter para estrutura local
-  time_t agora = initial_time + seg;
-  struct tm* horaLocal = localtime(&agora);
-  strftime(str, 24, "%Y-%m-%d %H:%M:%S", horaLocal);
-}
-
-
-
+// Faz a gestão dos comandos do utilizador
 void handleCommand() {
   if (server.hasArg("action")) {
     String action = server.arg("action");
     
-    if (action == "cs")      calibration('s');
-    else if(action == "ce")  calibration('e');
+    if (action == "cs")      calibration('s'); // Calibration Start
+    else if(action == "ce")  calibration('e'); // Calibration End
     else                     Serial.println("Comando desconhecido: " + action);
     
     server.send(200, "text/plain", "Comando recebido: " + action);
@@ -42,7 +27,7 @@ void handleCommand() {
   }
 }
 
-//Envia os eventos quando o cliente acede ao site https://<ip>/dados
+//Envia os eventos ao cliente quando este acede a https://<ip>/events
 void handleEvents() {
 
   char data_str[25];
@@ -66,12 +51,15 @@ void handleClear() {
 }
 
 
-
-
-
-
-
-
 void handleClient(){
   server.handleClient();
+}
+
+//Cria uma string str[] no formato aaaa-mm-dd; t_seg = segundos desde que o pico foi iniciado. 
+void formatTime(long t_seg, char str[])
+{
+  // Converter para estrutura local
+  time_t agora = initial_time + t_seg;
+  struct tm* horaLocal = localtime(&agora);
+  strftime(str, 24, "%Y-%m-%d %H:%M:%S", horaLocal);
 }

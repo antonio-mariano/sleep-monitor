@@ -47,16 +47,16 @@ legend(h, {'Left Side (wall)', 'Center Left', 'Center Right', 'Right Side'}, 'Lo
 hold off;
 
 
-% Histograms by sensor 
-% figure;
-% labels = {'Left','Center Left','Center Right','Right'};
-% for n = 0:3 
-%     subplot(1,4,n+1) 
-%     histogram(pressure(pos == n), 'FaceColor', colorMap(n+1,:), 'EdgeColor', 'none'); 
-%     ylim([0 50]); xlim(1000*[-1.5 1.5]);% xticks([-1000 0 1000])
-%     title(labels{n+1}); 
-%     xlabel('Pressure value'); ylabel('Frequency'); grid on; 
-% end
-% 
+%% Histograms by sensor 
+figure;
+labels = {'Left','Center Left','Center Right','Right'};
+for n = 0:3 
+    subplot(1,4,n+1) 
+    histogram(pressure(pos == n), 'FaceColor', colorMap(n+1,:), 'EdgeColor', 'none'); 
+    ylim([0 50]); xlim(1000*[-1.5 1.5]);% xticks([-1000 0 1000])
+    title(labels{n+1}); 
+    xlabel('Pressure value'); ylabel('Frequency'); grid on; 
+end
+
 
 

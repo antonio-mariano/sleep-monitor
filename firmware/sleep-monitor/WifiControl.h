@@ -1,17 +1,11 @@
 #pragma once
-
-
 #include <WiFi.h>
 #include <WebServer.h>
-
-
-extern const int button_pin;
 
 extern const char* ssid;
 extern const char* password;
 
-//extern bool wifi_on;
-
+extern const int button_pin;
 
 //Liga wifi
 void connect_wifi();
