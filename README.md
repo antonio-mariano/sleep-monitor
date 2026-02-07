@@ -5,9 +5,16 @@ a **Python script** to download the data in CSV format, and **MATLAB** for visua
 Future goals include interpreting the data and developing a smart alarm that wakes the user during light‑sleep phases
 
 ---
+<p align="center">
+  <img src="https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white">
+  <img src="https://img.shields.io/badge/Python-000000?style=for-the-badge&logo=python&logoColor=white">  
+  <img src="https://img.shields.io/badge/MATLAB-F58025?style=for-the-badge&logo=mathworks&logoColor=white">
+  <img src="https://img.shields.io/badge/Raspberry%20Pi%20Pico%20W-C51A4A?style=for-the-badge&logo=raspberrypi&logoColor=white">
+  <img src="https://img.shields.io/badge/Arduino_IDE-00979D?style=for-the-badge&logo=arduino&logoColor=white">
+</p>
 
 ## 📌 Project Overview
-The system collects pressure deltas in four different positions on a mattress during sleep, and stores it for later analysis.  
+The system collects pressure deltas in four different positions on a mattress during sleep and stores it for later analysis.  
 The figure below summarizes the full workflow:
 
 ![Workflow](images/workflow.png)
@@ -41,7 +48,7 @@ The figure below summarizes the full workflow:
 - Two external 1.5 kΩ resistors connected between GP26/27 and GND are needed to provide a correct reference.
 - Other values in the range 0.5kΩ to 5kΩ can be used: edit `#define R0 1.5` in `Sensors.h`
 - Working principle: SENSOR_LINE_1/2 are alternately driven to Vcc and GND, while measuring SENSOR_COL_A/B voltages.
-- The system of 4 equations and 4 unknowns (resistances) is solved iteratively in Sensors.cpp/h.
+- The system of four equations and four unknowns (the sensor resistances) is solved iteratively in `Sensors.cpp`.
 - **Optional:** A switch allows to turn ON/OFF the Wi-Fi. You can also use the serial-monitor command **w** to toggle Wi-Fi state, indicated by the built-in LED.
 
 <p align="center">
@@ -59,7 +66,7 @@ The figure below summarizes the full workflow:
 
 ## 🚀 How to Run
 ### Wi-Fi setup
-- To set up Wi-Fi, edit your credentials **char ssid[]** and **char password[]** in WiFiControl.cpp. Alternatively, create a different .cpp file and place them there (no need for .h).
+- To set up Wi-Fi, edit your credentials **char ssid[]** and **char password[]** in WiFiControl.cpp. Alternatively, create a different .cpp file and place them there (no header file needed)
 - When you power the Pico W, it will try to connect to your Wi-Fi. Using a serial monitor, you can view its progress
 - If Wi-Fi successfully connects, the IP running the web server will be printed; For example: IP: 192.168.1.21
 - The built‑in LED in the Pico W shows the Wi-Fi status
@@ -69,17 +76,17 @@ The figure below summarizes the full workflow:
 - **P** - Prints the sensor readings in real-time. Useful to view in graph format with the Arduino IDE Serial Plotter.
 - **CS** - Start the calibration process (instructions below)
 - **CE** - End the calibration process (instructions below)
-- **E** - Prints recorded Events in raw MATLAB format: [time (seconds) , sensor ID (0 to 3) , pressure]
+- **E** - Prints recorded events in raw MATLAB format: [time (seconds) , sensor ID (0 to 3) , pressure]
 
 ### Calibration
 - The code comes with a default calibration based on prescribed dimensions, so it's not mandatory to calibrate it, although it's useful to compensate individual differences between sensors
 - The sensor array should be in its final position under the mattress
-- Use **CS** to start the calibrating proccess. If Wi-Fi is OFF, the built-in LED will turn ON.
+- Use **CS** to start the calibration process. If Wi-Fi is OFF, the built-in LED will turn ON.
 - Press and release the mattress in each of the 4 sensor positions in sequence.
-- Apply approximately the same pressure in all four sensor positions
-- Use **CE** to end the calibrating process.
+- Apply approximately the same pressure to all four sensors
+- Use **CE** to end the calibration process.
 #### Note
-- The calibration algorithm adjusts the sensitivity of each sensor in order to map the same pressure applied during calibration to the value of 1000
+- The calibration algorithm adjusts the sensitivity of each sensor to map the pressure applied during calibration to the value of 1000
 - The calibration is stored in permanent memory, so you don't need to recalibrate every time you power the Pico W
 ### Real-Time Sensor Visualization
 - Using **P** in the serial monitor activates real‑time printing of sensor data
@@ -100,14 +107,14 @@ The figure below summarizes the full workflow:
 - Make sure your Python has `requests` installed
 - Run `analysis/get_events.py` to download the data and create `events.csv`
 #### Note
-- `get_events.py` searches for local web servers that respond to 192.168.1.x/events, with x from 1 to 64, as it very likely is in that range
+- `get_events.py` searches for local web servers that respond to 192.168.1.x/events, with x from 1 to 64, as it is very likely to be in that range.
 - Whenever you turn ON the Wi-Fi, it's IP is printed on the serial monitor
 - If you know the IP, you can view the data in the browser by accessing http://IP/events
 
 ### 2 - Creating a .mat dataset
 - Use MATLAB script `analysis/create_dataset.m` to convert raw CSV logs in `events.csv` to the `.mat` format.
 - Select a name by editing `output_name = 'example_name.mat'`.
-- Optionally,  you can add timestamps by editing `labels` and `labels_time`
+- Optionally, you can add timestamps by editing `labels` and `labels_time`
 
 ### 3 - Visualizing the data
 - Running `analysis/sleep_analysis.m` will load the `.mat` file and generate:
@@ -119,8 +126,11 @@ The figure below summarizes the full workflow:
 - If you don't have a dataset, you can test the visualization with `dataset/synthetic_sleep.mat`
 
 ### Example Outputs
-
-![Sleep Events over time and Pressure distribution histograms](images/sleep_data.png)
+<p align="center">
+  <img src="images/sleep_data.png" >
+  <br>
+  <em>Events over time and pressure distribution</em>
+</p>
 
 ---
 
