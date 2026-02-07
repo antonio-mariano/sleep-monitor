@@ -35,16 +35,7 @@ The figure below summarizes the full workflow:
 ## Circuit Assembly
 
 ![Schematic](images/schematic.png)
-<p align="center">
-  <img src="images/breadboard.jpg" height="250">
-  <br>
-  <em>Breadboard</em>
-</p>
-<p align="center">
-  <img src="images/sensors.jpg" height="450">
-  <br>
-  <em>a) Sensor array in conncted in matrix    &emsp;&emsp;&emsp;&emsp;      b) Sensor detail</em>
-</p>
+
 - Each sensor is modeled as a resistor (pressure dependent).
 - To build a sensor, cut a 3cm × 3cm square from a velostat sheet, and place it between two 2.5cm × 2.5cm aluminum‑foil electrodes
 - Two external 1.5 kΩ resistors connected between GP26/27 and GND are needed to provide a correct reference.
@@ -52,6 +43,18 @@ The figure below summarizes the full workflow:
 - Working principle: SENSOR_LINE_1/2 are alternately driven to Vcc and GND, while measuring SENSOR_COL_A/B voltages.
 - The system of 4 equations and 4 unknowns (resistances) is solved iteratively in Sensors.cpp/h.
 - **Optional:** A switch allows to turn ON/OFF the Wi-Fi. You can also use the serial-monitor command **w** to toggle Wi-Fi state, indicated by the built-in LED.
+
+<p align="center">
+  <img src="images/sensor_breadboard.jpg" >
+  <br>
+  <em>a) Sensor detail &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;  b) Breadboard assembly</em>
+</p>
+<p align="center">
+  <img src="images/sensor_array.jpg" >
+  <br>
+  <em>Sensors connected in matrix form</em>
+</p>
+
 ---
 
 ## 🚀 How to Run
@@ -84,9 +87,9 @@ The figure below summarizes the full workflow:
 - Below is an example of the serial plotter
 
 <p align="center">
-  <img src="images/serial_plotter.gif" height="450">
+  <img src="images/serial_plotter.gif" height="350">
   <br>
-  <em>Serial plotter during calibration.</em>
+  <em>Serial plotter during calibration</em>
 </p>
 
 ---
@@ -117,8 +120,7 @@ The figure below summarizes the full workflow:
 
 ### Example Outputs
 
-![Sleep](images/sleep.png)
-![Histogram](images/histogram.png)
+![Sleep Events over time and Pressure distribution histograms](images/sleep_data.png)
 
 ---
 
