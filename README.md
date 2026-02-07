@@ -35,6 +35,16 @@ The figure below summarizes the full workflow:
 ## Circuit Assembly
 
 ![Schematic](images/schematic.png)
+<p align="center">
+  <img src="images/breadboard.jpg" height="250">
+  <br>
+  <em>Breadboard</em>
+</p>
+<p align="center">
+  <img src="images/sensors.jpg" height="450">
+  <br>
+  <em>a) Sensor array in conncted in matrix    &emsp;&emsp;&emsp;&emsp;      b) Sensor detail</em>
+</p>
 - Each sensor is modeled as a resistor (pressure dependent).
 - To build a sensor, cut a 3cm × 3cm square from a velostat sheet, and place it between two 2.5cm × 2.5cm aluminum‑foil electrodes
 - Two external 1.5 kΩ resistors connected between GP26/27 and GND are needed to provide a correct reference.
@@ -73,7 +83,12 @@ The figure below summarizes the full workflow:
 - Open the Arduino IDE serial plotter to view in graphical format
 - Below is an example of the serial plotter
 
-![Serial-Plotter](images/serial_plotter.png)
+<p align="center">
+  <img src="images/serial_plotter.gif" height="450">
+  <br>
+  <em>Serial plotter during calibration.</em>
+</p>
+
 ---
 
 ## 🧪 Data Transfer and Analysis Tools
