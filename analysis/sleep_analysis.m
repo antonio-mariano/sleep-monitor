@@ -3,7 +3,6 @@ clc; close all;
 % Load a dataset
 load('synthetic_sleep.mat')
 
-
 % sleep_data is Nx3, being the columns [time, sensor position, pressure]
 time = (sleep_data(:,1) + initial_time) / 3600; % Convert to hours after mid-night
 pos = sleep_data(:,2);   % 0,1,2,3 = Left, Center Left, Center Right, Right
@@ -47,7 +46,7 @@ legend(h, {'Left Side (wall)', 'Center Left', 'Center Right', 'Right Side'}, 'Lo
 hold off;
 
 
-%% Histograms by sensor 
+% Histograms by sensor 
 figure;
 labels = {'Left','Center Left','Center Right','Right'};
 for n = 0:3 
