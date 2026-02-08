@@ -57,7 +57,7 @@ The figure below summarizes the full workflow:
 - Other values in the range 0.5kΩ to 5kΩ can be used: edit `#define R0 1.5` in `Sensors.h`
 - Working principle: SENSOR_LINE_1/2 are alternately driven to Vcc and GND, while measuring SENSOR_COL_A/B voltages
 - The system of four equations and four unknowns (the sensor resistances) is solved iteratively in `Sensors.cpp`
-- **Optional:** A switch allows to turn ON/OFF the Wi-Fi. You can also use the serial-monitor command **w** to toggle Wi-Fi state, indicated by the built-in LED
+- **Optional:** A switch allows to turn ON/OFF the Wi-Fi. You can also use the serial-monitor command **W** to toggle Wi-Fi state, indicated by the built-in LED
 
 <p align="center">
   <img src="images/sensor_breadboard.jpg" >
@@ -76,7 +76,7 @@ The figure below summarizes the full workflow:
 ### Wi-Fi setup
 - To set up Wi-Fi, edit your credentials **char ssid[]** and **char password[]** in WiFiControl.cpp. Alternatively, create a different .cpp file and place them there (no header file needed)
 - When you power the Pico W, it will try to connect to your Wi-Fi. Using a serial monitor, you can view its progress
-- If Wi-Fi successfully connects, the IP running the web server will be printed; For example: IP: 192.168.1.21
+- If Wi-Fi successfully connects, the IP running the web server will be printed; For example: `IP: 192.168.1.21`
 - The built‑in LED in the Pico W shows the Wi-Fi status
 
 ### User Commands for Serial Monitor
@@ -116,7 +116,7 @@ The figure below summarizes the full workflow:
 - Run `analysis/get_events.py` to download the data and create `events.csv`
 #### Note
 - `get_events.py` searches for local web servers that respond to 192.168.1.x/events, with x from 1 to 64, as it is very likely to be in that range
-- Whenever you turn ON the Wi-Fi, it's IP is printed on the serial monitor
+- Whenever you turn ON the Wi-Fi, its IP is printed on the serial monitor
 - If you know the IP, you can view the data in the browser by accessing http://IP/events
 
 ### 2 - Creating a .mat dataset
