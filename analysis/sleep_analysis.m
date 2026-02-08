@@ -1,7 +1,8 @@
 clc; close all; 
 
 % Load a dataset
-load('synthetic_sleep.mat')
+load('example_name.mat')
+% load('synthetic_sleep.mat')
 
 % sleep_data is Nx3, being the columns [time, sensor position, pressure]
 time = (sleep_data(:,1) + initial_time) / 3600; % Convert to hours after mid-night

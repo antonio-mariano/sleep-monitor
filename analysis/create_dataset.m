@@ -8,7 +8,7 @@ t0 = t(1); % Store the absolute initial timestamp (first row)
 time_seconds = seconds(t - t0); % seconds elapsed since Pico power on
 
 % Build the sleep_data array (N x 3)
-% sleep_data = [time_seconds, data.Position, data.Pressure];
+sleep_data = [time_seconds, data.Position, data.Pressure];
 
 % Compute initial_time = seconds after midnight for the first timestamp
 initial_time = seconds(timeofday(t0));
